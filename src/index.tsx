@@ -13,13 +13,13 @@ const abs_chords: string[] = [];
 const rel_chords: string[] = [];
 
 //キーとコードを選択
-const keys_and_chords = document.querySelectorAll(".key,.chord");
+const keys_and_chords = document.querySelectorAll('.key,.chord');
 
 //曲の今のキー
 let key_num = -1;
 //曲のキーとコードを順に回していく
 for (const key_and_chord of keys_and_chords) {
-    if (key_and_chord.className === "key") {
+    if (key_and_chord.className === 'key') {
         //それぞれのキーに対して
         const key = key_and_chord.textContent!;
         //キーをCを基準とした数字に変換
@@ -48,7 +48,7 @@ for (const key_and_chord of keys_and_chords) {
 
 //トグルボタンを作成
 function create_toggle_button() {
-    const h2 = document.getElementsByClassName("subtitle")[0];
+    const h2 = document.getElementsByClassName('subtitle')[0];
     const container = document.createElement('div');
     h2.after(container);
 
