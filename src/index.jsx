@@ -23,6 +23,7 @@ for (const key_and_chord of keys_and_chords) {
         //キーをCを基準とした数字に変換
         //example: "Key: E" => 4
         key_num = key_to_num(key)
+        // console.log(key_num);
     } else {
         //それぞれのコードに対して
         const abs_chord = key_and_chord.textContent
@@ -32,7 +33,7 @@ for (const key_and_chord of keys_and_chords) {
             rel_chords.push(abs_chord)
         } else {
             //絶対コードを相対コードに変換
-            const rel_chord = convert(abs_chord)
+            const rel_chord = convert(abs_chord, key_num)
             //nullかどうかで成功判定、失敗したら絶対コードをそのまま相対コードとする
             if (rel_chord != null) {
                 rel_chords.push(rel_chord)
@@ -62,7 +63,7 @@ function create_toggle_button() {
 //キーをCを基準とした数字に変換
 //example: "Key: E" => 4
 function key_to_num(key) {
-    chord_to_num(key.substring(5))[0]
+    return chord_to_num(key.substring(5))[0]
 }
 
 //トグルボタンが押されたときの処理
@@ -83,29 +84,33 @@ function onChange(event) {
 }
 
 //絶対コードを相対コードに変換する
-function convert(abs_chord) {
+function convert(abs_chord, key_num) {
     //括弧があるときは括弧の中身を変換してから括弧をつける
     //example: "(Caug)" => "(Iaug)" (key = Cの時)
     if (abs_chord[0] == '(' && abs_chord.endsWith(')')) {
-        const result = convert_chord(abs_chord.substring(1, abs_chord.length - 1))
+        const result = convert_chord(abs_chord.substring(1, abs_chord.length - 1), key_num)
         return '(' + result + ')'
     }
-    return convert_chord(abs_chord)
+    const res = convert_chord(abs_chord, key_num)
+    return res
 }
 
-function convert_chord(abs_chord) {
+function convert_chord(abs_chord, key_num) {
     //オンコードがあるときは"/"のindex
     //ないときは-1
     //"/"で分離してそれぞれを普通のコードとして変換してから結合する
     const loc = abs_chord.search('/')
     const on_chord = abs_chord.substring(loc + 1)
-    const rel_on_chord = convert_norm(on_chord)
-    const rel_chord = convert_norm(abs_chord.substring(0, loc + 1))
-    return rel_chord + rel_on_chord
+    const rel_on_chord = convert_norm(on_chord, key_num)
+    const chord = convert_norm(abs_chord.substring(0, loc + 1), key_num)
+    
+    return chord + rel_on_chord
 }
 
 //オンコードでもなく、括弧が外側についてもいないときの相対コードへの変換
-function convert_norm(abs_chord) {
+function convert_norm(abs_chord, key_num) {
+    // console.log(abs_chord);
+    // console.log(key_num);
     let [abs_num, abs_tmp] = chord_to_num(abs_chord)
     if (abs_num == null) {
         return abs_chord
