@@ -73,15 +73,15 @@ function key_to_num(key: string) {
 function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     //トグルボタンがオンのときは相対コードを表示
     if (event.target.checked) {
-        const chords = document.getElementsByClassName('chord')
+        const chords = document.getElementsByClassName('chord');
         for (let i = 0; i < chords.length; i++) {
-            chords[i].textContent = rel_chords[i]
+            chords[i].textContent = rel_chords[i];
         }
     } else {
         //トグルボタンがオフのときは絶対コードを表示
-        const chords = document.getElementsByClassName('chord')
+        const chords = document.getElementsByClassName('chord');
         for (let i = 0; i < chords.length; i++) {
-            chords[i].textContent = abs_chords[i]
+            chords[i].textContent = abs_chords[i];
         }
     }
 }
@@ -91,23 +91,23 @@ function convert(abs_chord: AbsoluteChord, key_num: number) {
     //括弧があるときは括弧の中身を変換してから括弧をつける
     //example: "(Caug)" => "(Iaug)" (key = Cの時)
     if (abs_chord[0] == '(' && abs_chord.endsWith(')')) {
-        const result = convert_chord(abs_chord.substring(1, abs_chord.length - 1), key_num)
-        return '(' + result + ')'
+        const result = convert_chord(abs_chord.substring(1, abs_chord.length - 1), key_num);
+        return '(' + result + ')';
     }
-    const res = convert_chord(abs_chord, key_num)
-    return res
+    const res = convert_chord(abs_chord, key_num);
+    return res;
 }
 
 function convert_chord(abs_chord: AbsoluteChord, key_num: number) {
     //オンコードがあるときは"/"のindex
     //ないときは-1
     //"/"で分離してそれぞれを普通のコードとして変換してから結合する
-    const loc = abs_chord.search('/')
-    const on_chord = abs_chord.substring(loc + 1)
-    const rel_on_chord = convert_norm(on_chord, key_num)
-    const chord = convert_norm(abs_chord.substring(0, loc + 1), key_num)
+    const loc = abs_chord.search('/');
+    const on_chord = abs_chord.substring(loc + 1);
+    const rel_on_chord = convert_norm(on_chord, key_num);
+    const chord = convert_norm(abs_chord.substring(0, loc + 1), key_num);
     
-    return chord + rel_on_chord
+    return chord + rel_on_chord;
 }
 
 //オンコードでもなく、括弧が外側についてもいないときの相対コードへの変換
@@ -162,12 +162,12 @@ function chord_to_num(chord: AbsoluteChord): [ null ] | [ number, string | null 
     if (chord.length >= 2) {
         switch (chord[1]) {
             case '#':
-                num = (num + 1) % 12
-                tmp = '#'
+                num = (num + 1) % 12;
+                tmp = '#';
                 break;
             case 'b':
-                num = (num - 1) % 12
-                tmp = 'b'
+                num = (num - 1) % 12;
+                tmp = 'b';
                 break;
         }
     }
@@ -181,13 +181,13 @@ function num_to_rel(num: number, tmp: string | null) {
     if (!is_diatonic(num)) {
         if (tmp === 'b') {
             num += 1;
-            return diatonic_num_to_rel(num) + 'b'
+            return diatonic_num_to_rel(num) + 'b';
         } else {
             num -= 1;
-            return diatonic_num_to_rel(num) + '#'
+            return diatonic_num_to_rel(num) + '#';
         }
     } else {
-        return diatonic_num_to_rel(num)
+        return diatonic_num_to_rel(num);
     }
 
 }
@@ -197,25 +197,25 @@ function diatonic_num_to_rel(num: number) {
     let rel = null;
     switch (num) {
         case 0:
-            rel = 'I'
+            rel = 'I';
             break;
         case 2:
-            rel = 'II'
+            rel = 'II';
             break;
         case 4:
-            rel = 'III'
+            rel = 'III';
             break;
         case 5:
-            rel = 'IV'
+            rel = 'IV';
             break;
         case 7:
-            rel = 'V'
+            rel = 'V';
             break;
         case 9:
-            rel = 'VI'
+            rel = 'VI';
             break;
         case 11:
-            rel = 'VII'
+            rel = 'VII';
             break;
     }
     return rel;
